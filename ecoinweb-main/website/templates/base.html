@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{% block title %}Home{% endblock %}</title>
+  </head>
+  <body>
+    {% if request.path == '/' %}
+    <nav
+      id="navbar"
+      class="navbar navbar-expand-lg navbar-dark text-md py-2 bg-green-900 fixed-top transform -translate-y-full opacity-0 transition-transform duration-300 ease-in-out"
+    >
+      <a class="navbar-brand mx-2" href="/">
+        <img
+          class="h-12"
+          src="https://media.discordapp.net/attachments/1266893920642531442/1267158332594978816/ecoin.png?ex=66a7c4a9&is=66a67329&hm=3e34a931fe3a07d992625d0d1bc10191f8251199e352ab902f111a592bf7e42c&=&format=webp&quality=lossless&width=924&height=734"
+          alt="Logo"
+        />
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="navbar-nav flex-grow-1">
+          <a class="nav-item nav-link" id="home" href="/">Home</a>
+          <a class="nav-item nav-link" id="explore" href="/explore">Explore</a>
+          <a class="nav-item nav-link" id="leaderboard" href="/leaderboard"
+            >Leaderboard</a
+          >
+          {% if current_user.is_authenticated %}
+          <a class="nav-item nav-link" id="dashboard" href="/customerdashboard"
+            >Dashboard</a
+          >
+          <div class="lg:ml-auto lg:flex lg:align-items-center justify-center">
+            <p class="font-semibold text-white my-auto mx-2">
+              Welcome back, {{current_user.first_name}}!
+            </p>
+            <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+          </div>
+          {% else %}
+          <div class="lg:ml-auto lg:flex justify-center flex-row">
+            <a class="nav-item nav-link" id="login" href="/login">Login</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    {% else %}
+    <nav
+      id="navbar"
+      class="navbar navbar-expand-lg navbar-dark text-md py-2 bg-green-900"
+    >
+      <a class="navbar-brand mx-2" href="/">
+        <img
+          class="h-12"
+          src="https://media.discordapp.net/attachments/1266893920642531442/1267158332594978816/ecoin.png?ex=66a7c4a9&is=66a67329&hm=3e34a931fe3a07d992625d0d1bc10191f8251199e352ab902f111a592bf7e42c&=&format=webp&quality=lossless&width=924&height=734"
+          alt="Logo"
+        />
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="navbar-nav flex-grow-1">
+          <a class="nav-item nav-link" id="home" href="/">Home</a>
+          <a class="nav-item nav-link" id="explore" href="/explore">Explore</a>
+          <a class="nav-item nav-link" id="leaderboard" href="/leaderboard"
+            >Leaderboard</a
+          >
+          {% if current_user.is_authenticated %}
+          <a class="nav-item nav-link" id="dashboard" href="/customerdashboard"
+            >Dashboard</a
+          >
+          <div class="lg:ml-auto lg:flex lg:align-items-center justify-center">
+            <p class="font-semibold text-white my-auto mx-2">
+              Welcome back, {{current_user.first_name}}!
+            </p>
+            <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+          </div>
+          {% else %}
+          <div class="lg:ml-auto lg:flex justify-center flex-row">
+            <a class="nav-item nav-link" id="login" href="/login">Login</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+    {% endif %} {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %} {% for category, message in messages %} {% if category ==
+    'error' %}
+    <div class="alert alert-danger alert-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% else %}
+    <div class="alert alert-success alert-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %} {% endfor %} {% endif %} {% endwith %}
+
+    <div class="">{% block content %} {% endblock %}</div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
